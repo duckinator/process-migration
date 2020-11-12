@@ -15,9 +15,10 @@ criu dump --tree "$PID" --images-dir "$IMAGES" --tcp-established --ghost-limit 1
 echo "!! Copying images to $REMOTE..."
 scp -r "$IMAGES" "$REMOTE:~/$IMAGES" || exit $?
 echo "!! Restoring on $REMOTE..."
-ssh "$REMOTE" criu restore --restore-detached --images-dir "~/$IMAGES" || exit $?
+# --restore-detached
+ssh "$REMOTE" criu restore --images-dir "~/$IMAGES" || exit $?
 echo "!! Successfully migrated to $REMOTE; killing original process."
 kill -9 $PID
 echo "!! Cleaning up..."
 ssh "$REMOTE" rm -rf '~/'"$IMAGES"
-rm -rf "$IMAGES"
+#rm -rf "$IMAGES"
